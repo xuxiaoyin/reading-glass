@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<style>
+	body,html{ margin: 0; padding: 0;}
+	.small{ position: relative; width: 180px; height: 180px;}
+	.small span{ position: absolute; left: 0; top: 0; width: 100px; height: 100px; background: yellow; opacity: 0.5; filter:alpha(opacity=50); display: none;}
+	.small img{ width: 180px; height: 180px;}
+	.big{ position: absolute; width: 400px; height: 400px; overflow: hidden; top: 0; left: 200px;}
+	.big img{ width: 900px; height: 900px; position: absolute; top: 0; left: 0;}
+</style>
+<script>
+window.onload=function(){
+	var oTab=document.getElementById('div1');
+	var oSpan=oTab.querySelector('span');
+	var oBig=document.getElementById('div2');
+	var oImg=oBig.querySelector('img');
+	
+	oTab.onmouseenter=function(){
+		oSpan.style.display='block';
+	};
+	
+	oTab.onmouseleave=function(){
+		oSpan.style.display='none';
+	};
+	
+	oTab.onmousemove=function(ev){
+		var ev=ev||event;
+		var L=ev.clientX-this.offsetLeft-oSpan.offsetWidth/2;
+		var T=ev.clientY-this.offsetTop-oSpan.offsetHeight/2;
+		if(L<0){
+			L=0;
+		}else if(L>this.offsetWidth-oSpan.offsetWidth){
+			L=this.offsetWidth-oSpan.offsetWidth;
+		};
+		if(T<0){
+			T=0;
+		}else if(T>this.offsetHeight-oSpan.offsetHeight){
+			T=this.offsetHeight-oSpan.offsetHeight;
+		}
+		
+		oSpan.style.left=L+'px';
+		oSpan.style.top=T+'px';
+		
+		var scalX=L/(oTab.offsetWidth-oSpan.offsetWidth);
+		var scalY=T/(oTab.offsetHeight-oSpan.offsetHeight);
+		oImg.style.left=-scalX*(oImg.offsetWidth-oBig.offsetWidth)+'px';
+		oImg.style.top=-scalY*(oImg.offsetHeight-oBig.offsetHeight)+'px';
+		
+	}
+	
+}
+</script>
+<body>
+	<div class="small" id="div1">
+		<img src="b2.jpg" />
+		<span class="drag"></span>
+	</div>
+	<div class="big" id="div2">
+		<img src="b1.jpg"/>
+	</div>
+</body>
+
+</html>
